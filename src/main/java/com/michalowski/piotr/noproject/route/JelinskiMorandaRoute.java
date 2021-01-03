@@ -42,7 +42,7 @@ public class JelinskiMorandaRoute extends RouteBuilder {
 
             .bean(jelinskiMorandaProcessor)
             .id(STEP_JELINSKI_MORANDA_PROCESSOR)
-            .log(LoggingLevel.INFO, logger, stepDoneMessage(STEP_VALIDATION_PROCESSOR))
+            .log(LoggingLevel.INFO, logger, stepDoneMessage(STEP_JELINSKI_MORANDA_PROCESSOR))
 
             .marshal().json()
             .id(STEP_MARSHALLING_JM_ESTIMATION_DATA)

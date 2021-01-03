@@ -40,7 +40,7 @@ public class SchickWolvertonRoute extends RouteBuilder {
 
             .bean(schickWolvertonProcessor)
             .id(STEP_SCHICK_WOLVERTON_PROCESSOR)
-            .log(LoggingLevel.INFO, logger, stepDoneMessage(STEP_VALIDATION_PROCESSOR))
+            .log(LoggingLevel.INFO, logger, stepDoneMessage(STEP_SCHICK_WOLVERTON_PROCESSOR))
 
             .marshal().json()
             .id(STEP_MARSHALLING_SW_ESTIMATION_DATA)
