@@ -1,8 +1,9 @@
 package com.michalowski.piotr.noproject.processor;
 
-import com.michalowski.piotr.noproject.model.ErrorData;
+import com.michalowski.piotr.noproject.model.InputData;
 import com.michalowski.piotr.noproject.model.EstimationData;
 import com.michalowski.piotr.noproject.model.EstimationModel;
+import com.michalowski.piotr.noproject.solver.JelinskiMorandaSolver;
 import org.apache.camel.Handler;
 import org.springframework.stereotype.Component;
 
@@ -12,19 +13,20 @@ import java.util.List;
 public class JelinskiMorandaProcessor {
 
     @Handler
-    public EstimationData process(ErrorData errorData) {
-        List<Integer> timeValues = errorData.getTimeValues();
+    public EstimationData process(InputData inputData) {
+        List<Integer> timeValues = inputData.getTimeValues();
+        double accuracy = inputData.getAccuracy();
 
-        //TODO: some processing to receive N, Omega and Expected time
-        Double estimatorN = 0.0;
-        Double estimatorOmega = 0.0;
-        Double expectedTime = 0.0;
+        JelinskiMorandaSolver solver = new JelinskiMorandaSolver(timeValues, accuracy);
+        Double estimatorN = solver.getNParameter().doubleValue();
+        Double estimatorOmega = solver.getFiParameter().doubleValue();
+        Double expectedTime = solver.getExpectedTime().doubleValue();
 
         return EstimationData.builder()
-                .timeValues(timeValues)
+                .inputData(inputData)
                 .model(EstimationModel.JelinskiMorandaModel)
                 .estimatorN(estimatorN)
-                .estimatorOmega(estimatorOmega)
+                .estimatorFi(estimatorOmega)
                 .expectedTime(expectedTime)
                 .build();
     }

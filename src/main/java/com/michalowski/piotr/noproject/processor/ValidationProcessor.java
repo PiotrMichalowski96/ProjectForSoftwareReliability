@@ -1,29 +1,43 @@
 package com.michalowski.piotr.noproject.processor;
 
-import com.google.common.collect.Ordering;
 import com.michalowski.piotr.noproject.exception.UnexpectedErrorsDataException;
-import com.michalowski.piotr.noproject.model.ErrorData;
+import com.michalowski.piotr.noproject.model.InputData;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Handler;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
-import java.util.Spliterator;
-import java.util.stream.Stream;
 
 @Slf4j
 @Component
 public class ValidationProcessor {
 
-    //TODO: change minimum elements value
-    private final static int MINIMUM_ELEMENTS = 2;
+    private final static int MINIMUM_ELEMENTS = 100;
+    private final static double MINIMAL_RELATIVE_ERROR = 0.001;
 
     @Handler
-    public void process(ErrorData errorData) throws UnexpectedErrorsDataException {
-        List<Integer> errors = errorData.getTimeValues();
+    public void process(InputData inputData) throws UnexpectedErrorsDataException {
+        List<Integer> errors = inputData.getTimeValues();
+        double accuracy = inputData.getAccuracy();
         checkElementNumber(errors);
         checkIfElementsArePositive(errors);
-        checkIfElementsAreSorted(errors);
+        checkIfAccuracyIsPositive(accuracy);
+        checkIfAccuracyMinimal(accuracy);
+    }
+
+    private void checkIfAccuracyMinimal(double accuracy) {
+        if(accuracy < MINIMAL_RELATIVE_ERROR) {
+            String message = String.format("Wrong Data: accuracy value is less than minimum: %.3f",MINIMAL_RELATIVE_ERROR);
+            logger.error(message);
+            throw new UnexpectedErrorsDataException(message);
+        }
+    }
+
+    private void checkIfAccuracyIsPositive(double accuracy) {
+        if(accuracy <= 0) {
+            logger.error("Accuracy is not positive");
+            throw new UnexpectedErrorsDataException("Wrong Data: accuracy is not positive");
+        }
     }
 
     private void checkElementNumber(List<Integer> elements) throws UnexpectedErrorsDataException {
@@ -39,14 +53,6 @@ public class ValidationProcessor {
         if(hasNegative) {
             logger.error("Time values are not positive");
             throw new UnexpectedErrorsDataException("Wrong Data: time values are not positive");
-        }
-    }
-
-    private void checkIfElementsAreSorted(List<Integer> elements) throws UnexpectedErrorsDataException {
-        boolean isSorted = Ordering.natural().isOrdered(elements);
-        if(!isSorted) {
-            logger.error("Time values are not sorted");
-            throw new UnexpectedErrorsDataException("Wrong Data: time values are not sorted");
         }
     }
 }

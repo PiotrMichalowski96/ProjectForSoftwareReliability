@@ -1,6 +1,6 @@
 package com.michalowski.piotr.noproject.exception;
 
-import com.michalowski.piotr.noproject.model.ErrorData;
+import com.michalowski.piotr.noproject.model.InputData;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,5 +13,5 @@ import lombok.Setter;
 public class ErrorResponse {
     private String exceptionType;
     private String message;
-    private ErrorData inputData;
+    private InputData inputData;
 }

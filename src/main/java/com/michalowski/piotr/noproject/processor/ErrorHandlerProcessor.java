@@ -1,7 +1,7 @@
 package com.michalowski.piotr.noproject.processor;
 
 import com.michalowski.piotr.noproject.exception.ErrorResponse;
-import com.michalowski.piotr.noproject.model.ErrorData;
+import com.michalowski.piotr.noproject.model.InputData;
 import org.apache.camel.Exchange;
 import org.apache.camel.Handler;
 import org.springframework.stereotype.Component;
@@ -13,7 +13,7 @@ public class ErrorHandlerProcessor {
     public ErrorResponse process(Exchange exchange) throws Exception {
         Exception cause = exchange.getProperty(Exchange.EXCEPTION_CAUGHT, Exception.class);
 
-        ErrorData inputData = (ErrorData) exchange.getIn().getBody();
+        InputData inputData = (InputData) exchange.getIn().getBody();
         String exceptionType = cause.getClass().getSimpleName();
         String message = cause.getMessage();
 

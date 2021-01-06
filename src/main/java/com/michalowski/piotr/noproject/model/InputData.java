@@ -11,6 +11,7 @@ import java.util.List;
 @AllArgsConstructor
 @Getter
 @Setter
-public class ErrorData {
+public class InputData {
     List<Integer> timeValues;
+    double accuracy;
 }

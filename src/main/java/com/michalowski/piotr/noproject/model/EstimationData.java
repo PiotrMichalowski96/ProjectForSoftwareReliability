@@ -8,9 +8,9 @@ import java.util.List;
 @Getter
 @Setter
 public class EstimationData {
-    List<Integer> timeValues;
+    InputData inputData;
     EstimationModel model;
     Double estimatorN;
-    Double estimatorOmega;
+    Double estimatorFi;
     Double expectedTime;
 }

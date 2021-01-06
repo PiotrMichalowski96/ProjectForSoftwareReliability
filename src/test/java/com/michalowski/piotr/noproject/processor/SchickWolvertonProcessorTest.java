@@ -1,6 +1,6 @@
 package com.michalowski.piotr.noproject.processor;
 
-import com.michalowski.piotr.noproject.model.ErrorData;
+import com.michalowski.piotr.noproject.model.InputData;
 import com.michalowski.piotr.noproject.model.EstimationData;
 import com.michalowski.piotr.noproject.model.EstimationModel;
 import org.junit.jupiter.api.Test;
@@ -16,22 +16,22 @@ public class SchickWolvertonProcessorTest {
     @Test
     public void shouldReturnCorrectEstimationData() {
         //given
-        //TODO: change values
-        List<Integer> timeValues = List.of(1,2);
-        ErrorData inputErrorData = new ErrorData(timeValues);
-        Double expectedEstimatorN = 0.0;
-        Double expectedEstimatorOmega = 0.0;
-        Double expectedTimeValue = 0.0;
+        List<Integer> timeValues = List.of(1, 4, 7, 3, 5);
+        double accuracy = 0.1;
+        InputData inputData = new InputData(timeValues, accuracy);
+        Double expectedEstimatorN = 7.0;
+        Double expectedEstimatorFi = 0.021857142857142856;
+        Double expectedTimeValue = 8.477411079541396;
         EstimationData expectedEstimationData = EstimationData.builder()
-                .timeValues(timeValues)
+                .inputData(inputData)
                 .model(EstimationModel.SchickWolvertonModel)
                 .estimatorN(expectedEstimatorN)
-                .estimatorOmega(expectedEstimatorOmega)
+                .estimatorFi(expectedEstimatorFi)
                 .expectedTime(expectedTimeValue)
                 .build();
 
         //when
-        EstimationData resultEstimationData = processor.process(inputErrorData);
+        EstimationData resultEstimationData = processor.process(inputData);
 
         //then
         assertThat(resultEstimationData).isEqualToComparingFieldByField(expectedEstimationData);
