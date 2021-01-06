@@ -6,10 +6,16 @@ import org.apache.camel.*;
 import org.apache.camel.component.mock.MockEndpoint;
 import org.apache.camel.test.spring.junit5.CamelSpringTest;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 import static com.michalowski.piotr.noproject.route.common.Messages.stepDoneMessage;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -36,28 +42,44 @@ public class RouteTest {
     @Produce("direct:start")
     protected ProducerTemplate start;
 
-    @Test
-    public void shouldPassAllRoutes() throws Exception {
+    @ParameterizedTest
+    @ValueSource(ints = {1, 2, 3, 4, 5})
+    public void shouldPassAllRoutes(int messageNumber) throws InterruptedException, IOException {
+        //given
+        String inputFile = readJsonFileToString(String.format("src/test/resources/samples/input/message_%d_in.json", messageNumber));
+        String jelinskiMorandaExpectedFile = readJsonFileToString(String.format("src/test/resources/samples/output/message_%d_out_jm.json", messageNumber));
+        String schickWolvertonExpectedFile = readJsonFileToString(String.format("src/test/resources/samples/output/message_%d_out_sw.json", messageNumber));
+
         assertEquals(ServiceStatus.Started, camelContext.getStatus());
+        mockJelinskiMorandaEndpoint.expectedBodiesReceived(jelinskiMorandaExpectedFile);
+        mockSchickWolvertonEndpoint.expectedBodiesReceived(schickWolvertonExpectedFile);
 
-        mockJelinskiMorandaEndpoint.expectedBodiesReceived("{\"timeValues\":[1,2],\"model\":\"JelinskiMorandaModel\",\"estimatorN\":0.0,\"estimatorOmega\":0.0,\"expectedTime\":0.0}");
-        mockSchickWolvertonEndpoint.expectedBodiesReceived("{\"timeValues\":[1,2],\"model\":\"SchickWolvertonModel\",\"estimatorN\":0.0,\"estimatorOmega\":0.0,\"expectedTime\":0.0}");
-
-        start.sendBody("{\"timeValues\":[1,2]}");
+        //when
+        start.sendBody(inputFile);
         logger.info(stepDoneMessage("Send Body"));
 
+        //then
         MockEndpoint.assertIsSatisfied(camelContext);
     }
 
     @Test
-    public void shouldPassErrorRoute() throws InterruptedException {
+    public void shouldPassErrorRoute() throws InterruptedException, IOException {
+        //given
+        String inputFile = readJsonFileToString("src/test/resources/samples/input/message_1_in_corrupted.json");
+        String expectedFile = readJsonFileToString("src/test/resources/samples/output/message_1_out_corrupted.json");
+
         assertEquals(ServiceStatus.Started, camelContext.getStatus());
+        mockErrorResponseEndpoint.expectedBodiesReceived(expectedFile);
 
-        mockErrorResponseEndpoint.expectedBodiesReceived("{\"exceptionType\":\"UnexpectedErrorsDataException\",\"message\":\"Wrong Data: time values are not sorted\",\"inputData\":{\"timeValues\":[2,1]}}");
-
-        start.sendBody("{\"timeValues\":[2,1]}");
+        //when
+        start.sendBody(inputFile);
         logger.info(stepDoneMessage("Send Body"));
 
+        //then
         MockEndpoint.assertIsSatisfied(camelContext);
+    }
+
+    private String readJsonFileToString(String file) throws IOException {
+        return new String(Files.readAllBytes(Paths.get(file)));
     }
 }
