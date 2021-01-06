@@ -40,9 +40,9 @@ public class SchickWolvertonSolver extends BaseSolver {
         BigDecimal rightEquation;
 
         do {
+            tempNParameter = tempNParameter.add(BigDecimal.ONE);
             leftEquation  = solveTransformedEquation(tempNParameter, tConstant, sumSeriesFromNEquation);
             rightEquation = solveFiEquation(tempNParameter, tConstant);
-            tempNParameter = tempNParameter.add(BigDecimal.ONE);
         } while (!isAccuracySufficient(leftEquation, rightEquation));
         return tempNParameter;
     }

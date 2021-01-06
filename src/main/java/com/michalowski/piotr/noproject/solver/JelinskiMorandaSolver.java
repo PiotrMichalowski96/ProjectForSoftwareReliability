@@ -23,9 +23,9 @@ public class JelinskiMorandaSolver extends BaseSolver {
         BigDecimal rightEquation;
 
         do {
+            tempNParameter = tempNParameter.add(BigDecimal.ONE);
             leftEquation = solveLeftSideEquation(tempNParameter);
             rightEquation = solveRightSideEquation(tempNParameter);
-            tempNParameter = tempNParameter.add(BigDecimal.ONE);
         } while (!isAccuracySufficient(leftEquation, rightEquation));
         return tempNParameter;
     }
