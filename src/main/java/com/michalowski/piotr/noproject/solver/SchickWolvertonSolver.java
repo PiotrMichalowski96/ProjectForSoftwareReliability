@@ -1,7 +1,5 @@
 package com.michalowski.piotr.noproject.solver;
 
-import lombok.extern.slf4j.Slf4j;
-
 import java.math.BigDecimal;
 import java.math.MathContext;
 import java.util.List;

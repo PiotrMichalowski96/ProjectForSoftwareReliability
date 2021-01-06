@@ -6,7 +6,6 @@ import lombok.experimental.UtilityClass;
 import java.util.List;
 import java.util.Random;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @UtilityClass
 public class DataGenerator {

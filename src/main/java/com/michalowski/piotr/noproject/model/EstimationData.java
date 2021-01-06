@@ -2,8 +2,6 @@ package com.michalowski.piotr.noproject.model;
 
 import lombok.*;
 
-import java.util.List;
-
 @Builder
 @Getter
 @Setter

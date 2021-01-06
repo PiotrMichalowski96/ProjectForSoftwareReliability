@@ -1,7 +1,6 @@
 package com.michalowski.piotr.noproject.route;
 
 import com.michalowski.piotr.noproject.model.InputData;
-import com.michalowski.piotr.noproject.processor.ErrorHandlerProcessor;
 import com.michalowski.piotr.noproject.processor.ValidationProcessor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.ExchangePattern;
