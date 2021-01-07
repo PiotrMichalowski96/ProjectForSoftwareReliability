@@ -31,17 +31,17 @@ public class SchickWolvertonSolver extends BaseSolver {
     }
 
     private BigDecimal solveNParameter() {
-        BigDecimal tempNParameter = BigDecimal.valueOf(size);
+        BigDecimal tempNParameter = BigDecimal.valueOf(size+2);
         BigDecimal tConstant = solveSumOfSquareSeries(timeValues);
         BigDecimal sumSeriesFromNEquation = solveSumSeriesFromNEquation(timeValues);
-        BigDecimal leftEquation;
-        BigDecimal rightEquation;
+        BigDecimal leftEquation  = solveTransformedEquation(tempNParameter, tConstant, sumSeriesFromNEquation);
+        BigDecimal rightEquation = solveFiEquation(tempNParameter, tConstant);
 
-        do {
+        while (!isAccuracySufficient(leftEquation, rightEquation)) {
             tempNParameter = tempNParameter.add(BigDecimal.ONE);
             leftEquation  = solveTransformedEquation(tempNParameter, tConstant, sumSeriesFromNEquation);
             rightEquation = solveFiEquation(tempNParameter, tConstant);
-        } while (!isAccuracySufficient(leftEquation, rightEquation));
+        }
         return tempNParameter;
     }
 

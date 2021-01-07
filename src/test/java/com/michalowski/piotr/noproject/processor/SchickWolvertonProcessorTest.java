@@ -17,7 +17,7 @@ public class SchickWolvertonProcessorTest {
     public void shouldReturnCorrectEstimationData() {
         //given
         List<Integer> timeValues = List.of(1, 4, 7, 3, 5);
-        double accuracy = 0.1;
+        double accuracy = 0.01;
         InputData inputData = new InputData(timeValues, accuracy);
         Double expectedEstimatorN = 7.0;
         Double expectedEstimatorFi = 0.021857142857142856;

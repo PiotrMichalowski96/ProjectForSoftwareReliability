@@ -17,11 +17,11 @@ public class JelinskiMorandaProcessorTest {
     public void shouldReturnCorrectEstimationData() {
         //given
         List<Integer> timeValues = List.of(1, 4, 7, 3, 5);
-        double accuracy = 0.1;
+        double accuracy = 0.01;
         InputData inputData = new InputData(timeValues, accuracy);
-        Double expectedEstimatorN = 7.0;
-        Double expectedEstimatorFi = 0.053763440860215055;
-        Double expectedTimeValue = 18.6;
+        Double expectedEstimatorN = 8.0;
+        Double expectedEstimatorFi = 0.04424778761061947;
+        Double expectedTimeValue = 11.3;
         EstimationData expectedEstimationData = EstimationData.builder()
                 .inputData(inputData)
                 .model(EstimationModel.JelinskiMorandaModel)

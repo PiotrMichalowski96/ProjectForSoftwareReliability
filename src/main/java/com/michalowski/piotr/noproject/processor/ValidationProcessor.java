@@ -13,7 +13,7 @@ import java.util.List;
 public class ValidationProcessor {
 
     private final static int MINIMUM_ELEMENTS = 100;
-    private final static double MINIMAL_RELATIVE_ERROR = 0.001;
+    private final static double MINIMAL_RELATIVE_ERROR = 0.00035;
 
     @Handler
     public void process(InputData inputData) throws UnexpectedErrorsDataException {

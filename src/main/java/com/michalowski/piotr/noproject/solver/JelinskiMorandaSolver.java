@@ -18,15 +18,15 @@ public class JelinskiMorandaSolver extends BaseSolver {
     }
 
     private BigDecimal solveNParameter() {
-        BigDecimal tempNParameter = BigDecimal.valueOf(size);
-        BigDecimal leftEquation;
-        BigDecimal rightEquation;
+        BigDecimal tempNParameter = BigDecimal.valueOf(size+2);
+        BigDecimal leftEquation = solveLeftSideEquation(tempNParameter);
+        BigDecimal rightEquation = solveRightSideEquation(tempNParameter);
 
-        do {
+        while (!isAccuracySufficient(leftEquation, rightEquation)) {
             tempNParameter = tempNParameter.add(BigDecimal.ONE);
             leftEquation = solveLeftSideEquation(tempNParameter);
             rightEquation = solveRightSideEquation(tempNParameter);
-        } while (!isAccuracySufficient(leftEquation, rightEquation));
+        }
         return tempNParameter;
     }
 
