@@ -2,12 +2,12 @@ package com.michalowski.piotr.noproject.route;
 
 import com.michalowski.piotr.noproject.processor.JelinskiMorandaProcessor;
 
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import org.apache.camel.ExchangePattern;
 import org.apache.camel.LoggingLevel;
 import org.apache.camel.builder.RouteBuilder;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -15,21 +15,15 @@ import static com.michalowski.piotr.noproject.route.common.Messages.*;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class JelinskiMorandaRoute extends RouteBuilder {
 
     private final static String ROUTE_ID = "jelinski-miranda-model-subroute";
     public final static String INPUT_URI = "direct:jelinski-miranda-subroute-input";
 
+    @Value("${output.model.jm}")
     private final String outputUri;
-
     private final JelinskiMorandaProcessor jelinskiMorandaProcessor;
-
-    @Autowired
-    public JelinskiMorandaRoute(@Value("${output.model.jm}") String outputUri,
-                                JelinskiMorandaProcessor jelinskiMorandaProcessor) {
-        this.outputUri = outputUri;
-        this.jelinskiMorandaProcessor = jelinskiMorandaProcessor;
-    }
 
     @Override
     public void configure() throws Exception {

@@ -27,7 +27,7 @@ public class ValidationProcessor {
 
     private void checkIfAccuracyMinimal(double accuracy) {
         if(accuracy < MINIMAL_RELATIVE_ERROR) {
-            String message = String.format("Wrong Data: accuracy value is less than minimum: %.3f",MINIMAL_RELATIVE_ERROR);
+            String message = String.format("Wrong Data: accuracy value is less than minimum: %.5f",MINIMAL_RELATIVE_ERROR);
             logger.error(message);
             throw new UnexpectedErrorsDataException(message);
         }
